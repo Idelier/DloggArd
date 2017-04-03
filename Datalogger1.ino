@@ -1,7 +1,7 @@
 int receiveddata = 0;
 unsigned long tslr = 0; // time since last reset
 int interval = 1000; //interval of 1 s
-int count = 0; // parameter for number of counts
+long count = 0; // parameter for number of counts
 
 
 void setup() {
@@ -22,8 +22,6 @@ void loop() {
    Serial.println(count); //Printing the count that came from last 1s
    count = 0; // Zeroing the count for next loop
   
-  //Serial.println(odczytanaWartosc);2
-  //Serial.println(";");
-  //delay(1000);
+  
 
 }
