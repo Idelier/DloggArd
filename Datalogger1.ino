@@ -7,6 +7,12 @@ void count_inc()
   count++;
 }
 
+void print_count()
+{
+  Serial.println(count); //Printing the count that came from last 1s
+   count = 0; // Zeroing the count for next loop
+}
+
 void count_start()
 {
   attachInterrupt(0, counting_stop, FALLING); // ready to stop
@@ -35,6 +41,5 @@ void loop()
    {
     count_start();     
    }
-   Serial.println(count); //Printing the count that came from last 1s
-   count = 0; // Zeroing the count for next loop
+   print_count();
 }
