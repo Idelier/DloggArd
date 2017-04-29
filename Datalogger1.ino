@@ -4,7 +4,7 @@
 unsigned long tslr = 0;                    // time since last reset
 int interval = 1000;                       // interval of 1 s
 long count = 0;                            // parameter for number of counts
-violatile int state = LOW;                 // parameter for LED
+volatile int state = LOW;                 // parameter for LED
 
 
 void count_inc()
@@ -14,7 +14,7 @@ void count_inc()
 
 void print_count()
 {
-  Serial.println(count);                  //  Printing the count that came from last 1s
+  Serial.println(count);                  //  Printing the count that came from last time frame
    count = 0;                             //  Zeroing the count for next loop
 }
 void flash_led()
