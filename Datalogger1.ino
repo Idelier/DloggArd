@@ -2,7 +2,7 @@
 //# by K.D.
 
 unsigned long tslr = 0;                    // time since last reset
-int interval = 1000;                       // interval of 1 s
+int interval = 1000;                       // interval of x time
 long count = 0;                            // parameter for number of counts
 volatile int state = LOW;                 // parameter for LED
 
@@ -34,6 +34,7 @@ void setup()
 {
   pinMode(2, INPUT);                      //  attach counting pin
   pinMode(3, INPUT);                      //  attach blinking pin
+  pinMode(13, state);                     //  attach onboard LED
   Serial.begin(9600);                     //  connecting UART
   delay(1000);                            //  delay to remove random voltage spikes
 }
