@@ -1,45 +1,50 @@
-unsigned long tslr = 0; // time since last reset
-int interval = 1000; //interval of 1 s
-long count = 0; // parameter for number of counts
+#This program is a part of Geiger Muller Pulse Counter working together with java app.
+# by K.D.
+
+unsigned long tslr = 0;                    // time since last reset
+int interval = 1000;                       // interval of 1 s
+long count = 0;                            // parameter for number of counts
+violatile int state = LOW;                 // parameter for LED
+
 
 void count_inc()
 {
-  count++;
+  ++count;
 }
 
 void print_count()
 {
-  Serial.println(count); //Printing the count that came from last 1s
-   count = 0; // Zeroing the count for next loop
+  Serial.println(count);                  //  Printing the count that came from last 1s
+   count = 0;                             //  Zeroing the count for next loop
+}
+void flash_led()
+{
+  state = !state;
 }
 
 void count_start()
 {
-  attachInterrupt(0, counting_stop, FALLING); // ready to stop
-  attachInterrupt(1, count_inc, RISING); // ready to count pulses
-}
-
-void count_stop()
-{
-  detachInterrupt(1); // stop counting pulses
-  attachInterrupt(0, counting_start, RISING); // ready to start
+  attachInterrupt(0, count_inc, FALLING); //  add a count
+  attachInterrupt(1, flash_led, FALLING); //  flash the led
+  detachInterrupt(0);                     //  stop counting pulse
+  detachInterrupt(1);                     //  stop flash
 }
 
 void setup() 
 {
-  PinMode(3, INPUT);
-  digitalWrite(3, HIGH);
-  Serial.begin(9600);
-  delay(1000);  // delay to remove random voltage spike
+  pinMode(2, INPUT);                      //  attach counting pin
+  pinMode(3, INPUT);                      //  attach blinking pin
+  Serial.begin(9600);                     //  connecting UART
+  delay(1000);                            //  delay to remove random voltage spikes
 }
 
 void loop() 
 {
   
-  tslr = millis(); // obtaining reference
-   while((millis() - tslr) < interval)
+  tslr = millis();                        //  obtaining reference
+   while((millis() - tslr) < interval)    //  counting time frame
    {
     count_start();     
    }
-   print_count();
+   print_count();                         
 }
