@@ -1,5 +1,5 @@
-#This program is a part of Geiger Muller Pulse Counter working together with java app.
-# by K.D.
+//#This program is a part of Geiger Muller Pulse Counter working together with java app.
+//# by K.D.
 
 unsigned long tslr = 0;                    // time since last reset
 int interval = 1000;                       // interval of 1 s
