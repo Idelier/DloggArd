@@ -9,7 +9,8 @@ volatile int state = LOW;                 // parameter for LED
 
 void count_inc()
 {
-  ++count;
+  ++count;                                //increase count by 1
+  flash_led();                            //change the state of onboard LED to signal count change
 }
 
 void print_count()
@@ -19,22 +20,21 @@ void print_count()
 }
 void flash_led()
 {
-  state = !state;
+  state = !state;                         //change led state
 }
 
 void count_start()
 {
-  attachInterrupt(0, count_inc, FALLING); //  add a count
-  attachInterrupt(1, flash_led, FALLING); //  flash the led
+  attachInterrupt(0, count_inc, FALLING);   //  add a count 
   //detachInterrupt(0);                     //  stop counting pulse
-  //detachInterrupt(1);                     //  stop flash
+
 }
 
 void setup() 
-{
+{ 
   pinMode(2, INPUT);                      //  attach counting pin
-  pinMode(3, INPUT);                      //  attach blinking pin
-  pinMode(13, state);                     //  attach onboard LED
+  pinMode(13, OUTPUT);                     //  attach onboard LED
+  digitalWrite(13, state);
   Serial.begin(9600);                     //  connecting UART
   delay(1000);                            //  delay to remove random voltage spikes
 }
