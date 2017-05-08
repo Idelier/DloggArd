@@ -26,8 +26,8 @@ void count_start()
 {
   attachInterrupt(0, count_inc, FALLING); //  add a count
   attachInterrupt(1, flash_led, FALLING); //  flash the led
-  detachInterrupt(0);                     //  stop counting pulse
-  detachInterrupt(1);                     //  stop flash
+  //detachInterrupt(0);                     //  stop counting pulse
+  //detachInterrupt(1);                     //  stop flash
 }
 
 void setup() 
