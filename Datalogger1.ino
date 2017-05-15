@@ -15,7 +15,8 @@ void count_inc()
 
 void print_count()
 {
-  Serial.println(count);                  //  Printing the count that came from last time frame
+  Serial.print(count);                  //  Printing the count that came from last time frame
+  Serial.println(";");
    count = 0;                             //  Zeroing the count for next loop
 }
 void flash_led()
