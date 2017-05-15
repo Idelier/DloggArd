@@ -2,7 +2,7 @@
 //# by K.D.
 
 unsigned long tslr = 0;                    // time since last reset
-int interval = 1000;                       // interval of x time
+int interval = 5000;                       // interval of x time
 long count = 0;                            // parameter for number of counts
 volatile int state = LOW;                 // parameter for LED
 
@@ -47,5 +47,5 @@ void loop()
    {
     count_start();     
    }
-   print_count();                         
+   print_count();                        
 }
