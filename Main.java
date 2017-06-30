@@ -23,6 +23,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -38,8 +41,8 @@ public class Main {
 		
 		// create and configure the window
 		JFrame window = new JFrame();
-		window.setTitle("Pulse count Graph GUI");
-		window.setSize(640, 480);
+		window.setTitle("GM Datalogger GUI");
+		window.setSize(1024, 768);
 		window.setLayout(new BorderLayout());
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -57,20 +60,28 @@ public class Main {
 			portList.addItem(portNames[i].getSystemPortName());
 				
 		// create the line graph
-		XYSeries series = new XYSeries("Pulse Readings");
-		XYSeriesCollection dataset = new XYSeriesCollection(series);
-		JFreeChart chart = ChartFactory.createXYLineChart("N of Counts", "Number of interval ", "Pulse Counter", dataset);
-		
+		XYSeries XYlinedataset = new XYSeries("count value");
+		XYSeriesCollection dataset = new XYSeriesCollection(XYlinedataset);
+		JFreeChart XYchart = ChartFactory.createXYLineChart("Count/time graph", "Interval No.", " Count No. ", dataset, PlotOrientation.VERTICAL,false,false,false);
+		XYPlot chartCategoryPlot = XYchart.getXYPlot();
+		chartCategoryPlot.setRangeGridlinePaint(Color.BLACK);
+		chartCategoryPlot.setBackgroundPaint(Color.WHITE);
+		chartCategoryPlot.setDomainGridlinePaint(Color.BLACK);
 		// create histogram
 		HashMap<Integer, Integer> histogramRawData = new HashMap<Integer, Integer>();
 		DefaultCategoryDataset histogramDataset = new DefaultCategoryDataset();
-		JFreeChart histogramChart = ChartFactory.createBarChart("N of Counts", "Count value ", "Histogram", histogramDataset);
+		JFreeChart histogramChart = ChartFactory.createBarChart("Histogram", "Count value ", "Occurence No.", histogramDataset);
 		CategoryPlot histogramCategoryPlot = histogramChart.getCategoryPlot();
 		histogramCategoryPlot.setRangeGridlinePaint(Color.BLACK);
+		histogramCategoryPlot.setBackgroundPaint(Color.WHITE);
+		
+		BarRenderer barrenderer = (BarRenderer) histogramCategoryPlot.getRenderer();
+		barrenderer.setMaximumBarWidth(.05);
+		barrenderer.setDrawBarOutline(false);
 		
 		// panel with graphs
 		JPanel graphsPanel = new JPanel();
-		graphsPanel.add(new ChartPanel(chart));
+		graphsPanel.add(new ChartPanel(XYchart));
 		graphsPanel.add(new ChartPanel(histogramChart));
 		graphsPanel.setLayout(new GridLayout(2, 0));
 		window.add(graphsPanel, BorderLayout.CENTER);
@@ -109,7 +120,7 @@ public class Main {
 									writer.close();
 									// populates the graph and refreshing
 									
-									series.add( x++, number);
+									XYlinedataset.add( x++, number);
 									
 									
 									int histogramActualValue;		//odczytywanie aktualnej wartości kolumnowej histogramu
@@ -137,7 +148,8 @@ public class Main {
 					chosenPort.closePort();
 					portList.setEnabled(true);
 					connectButton.setText("Connect");
-					series.clear();
+					XYlinedataset.clear();
+					histogramDataset.clear();
 					x = 0;
 				}
 			}
